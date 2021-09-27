@@ -7,6 +7,8 @@
 #include "button.h"
 #include "menu.h"
 #include "ResourcePath.hpp"
+#include <json/value.h>
+#include <json/json.h>
 
 sf::Packet& operator <<(sf::Packet& packet, Player& p) {
     sf::Vector2f playerPos = p.getPos();
@@ -98,6 +100,12 @@ int runMainMenu(sf::RenderWindow& window, Menu& mainMenu, sf::TcpSocket& socket)
 }
 
 int main() {
+    // Config file
+    ifstream configFile(resourcePath() + "config.json");
+    Json::Value config;
+    Json::Reader reader;
+    reader.parse(configFile, config);
+    
     // Multiplayer
     sf::TcpSocket socket;
     bool multiplayer = false;
@@ -106,28 +114,37 @@ int main() {
     socket.setBlocking(false);
     
     // Window settings
-    const int fps = 24;
-    sf::Vector2u windowSize(800, 800);
-    sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), "2D Shooter");
+    const int fps = config["window"]["fps"].asInt();
+    sf::Vector2u windowSize(config["window"]["size"][0].asUInt(), config["window"]["size"][1].asUInt());
+    sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), config["window"]["title"].asString());
     window.setFramerateLimit(fps);
     window.setKeyRepeatEnabled(false);
     
     // Player settings
-    float playerSize = 20;
-    float playerSpeed = 150;
-    float rayPrecision = 10;
-    sf::Vector2f player1Pos(240 - playerSize, 240 - playerSize);
-    sf::Vector2f player2Pos(560 - playerSize, 560 - playerSize);
-    sf::Vector2f spawnpoint(0, 0);
-    sf::Color player1Color = sf::Color::Red;
-    sf::Color player2Color = sf::Color::Blue;
+    float playerSize = config["player"]["size"].asFloat();
+    float playerSpeed = config["player"]["speed"].asFloat();
+    float rayPrecision = config["player"]["ray_precision"].asFloat();
+    
+    auto cfgP1Pos = config["player"]["pos"][0];
+    auto cfgP2Pos = config["player"]["pos"][1];
+    auto cfgP1Color = config["player"]["color"][0];
+    auto cfgP2Color = config["player"]["color"][1];
+    auto cfgSpawnpoint = config["player"]["spawnpoint"];
+    
+    sf::Vector2f player1Pos(cfgP1Pos[0].asFloat(), cfgP1Pos[1].asFloat());
+    sf::Vector2f player2Pos(cfgP2Pos[0].asFloat(), cfgP2Pos[1].asFloat());
+    sf::Vector2f spawnpoint(cfgSpawnpoint[0].asFloat(), cfgSpawnpoint[1].asFloat());
+    sf::Color player1Color = sf::Color(cfgP1Color[0].asInt(), cfgP1Color[1].asInt(), cfgP1Color[2].asInt());
+    sf::Color player2Color = sf::Color(cfgP2Color[0].asInt(), cfgP2Color[1].asInt(), cfgP2Color[2].asInt());
     
     // Grid settings
-    sf::Vector2f gridPos(0, 0);
-    sf::Vector2f gridSize(10, 10);
-    float gridTileSize = 80;
-    string mapFileName = "map.txt";
-    srand(time(NULL));
+    auto cfgGridPos = config["grid"]["pos"];
+    auto cfgGridSize = config["grid"]["size"];
+    
+    sf::Vector2f gridPos(cfgGridPos[0].asFloat(), cfgGridPos[1].asFloat());
+    sf::Vector2f gridSize(cfgGridSize[0].asFloat(), cfgGridSize[0].asFloat());
+    float gridTileSize = config["grid"]["tile_size"].asFloat();
+    string mapFileName = config["grid"]["map"].asString();
     
     // Class objects
     vector<Player> players;

@@ -19,7 +19,8 @@
 		5F937B0326FFDF9700588D20 /* btn-back.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F937B0226FFDF9700588D20 /* btn-back.png */; };
 		5F937B0526FFF36D00588D20 /* btn-joinserver.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F937B0426FFF36D00588D20 /* btn-joinserver.png */; };
 		5F937B0726FFF37900588D20 /* btn-createserver.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F937B0626FFF37900588D20 /* btn-createserver.png */; };
-		5F937B1027000F9100588D20 /* SourceCodePro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F937B0F27000F9100588D20 /* SourceCodePro-Regular.ttf */; };
+		5FB90D2727016D470099041B /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FB90D2627016D470099041B /* config.json */; };
+		5FB90D29270199AF0099041B /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 5FB90D28270199AF0099041B /* lib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,7 +39,9 @@
 		5F937B0226FFDF9700588D20 /* btn-back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btn-back.png"; path = "2DShooter/btn-back.png"; sourceTree = SOURCE_ROOT; };
 		5F937B0426FFF36D00588D20 /* btn-joinserver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btn-joinserver.png"; path = "2DShooter/btn-joinserver.png"; sourceTree = SOURCE_ROOT; };
 		5F937B0626FFF37900588D20 /* btn-createserver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btn-createserver.png"; path = "2DShooter/btn-createserver.png"; sourceTree = SOURCE_ROOT; };
-		5F937B0F27000F9100588D20 /* SourceCodePro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceCodePro-Regular.ttf"; path = "../../../../Fonts/Source_Code_Pro/SourceCodePro-Regular.ttf"; sourceTree = "<group>"; };
+		5FB90D2627016D470099041B /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = config.json; path = 2DShooter/Resources/config.json; sourceTree = SOURCE_ROOT; };
+		5FB90D28270199AF0099041B /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		5FB90D2C27019AA70099041B /* SourceCodePro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceCodePro-Regular.ttf"; path = "2DShooter/SourceCodePro-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +75,7 @@
 		5F7C223826F833B70031CC25 /* 2DShooter */ = {
 			isa = PBXGroup;
 			children = (
+				5FB90D28270199AF0099041B /* lib */,
 				5F937AEC26FFB15600588D20 /* include */,
 				5F7C223B26F833B80031CC25 /* ResourcePath.mm */,
 				5F7C223D26F833B80031CC25 /* ResourcePath.hpp */,
@@ -93,7 +97,8 @@
 		5F7C224026F833B80031CC25 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				5F937B0F27000F9100588D20 /* SourceCodePro-Regular.ttf */,
+				5FB90D2C27019AA70099041B /* SourceCodePro-Regular.ttf */,
+				5FB90D2627016D470099041B /* config.json */,
 				5F937B0626FFF37900588D20 /* btn-createserver.png */,
 				5F937B0426FFF36D00588D20 /* btn-joinserver.png */,
 				5F937B0226FFDF9700588D20 /* btn-back.png */,
@@ -177,10 +182,11 @@
 				5F937AFB26FFD5AC00588D20 /* btn-play.png in Resources */,
 				5F937AF926FFD59C00588D20 /* btn-settings.png in Resources */,
 				5F937AED26FFB15600588D20 /* include in Resources */,
+				5FB90D2727016D470099041B /* config.json in Resources */,
 				5F937B0726FFF37900588D20 /* btn-createserver.png in Resources */,
 				5F937AFD26FFD6FF00588D20 /* btn-exit.png in Resources */,
+				5FB90D29270199AF0099041B /* lib in Resources */,
 				5F937B0526FFF36D00588D20 /* btn-joinserver.png in Resources */,
-				5F937B1027000F9100588D20 /* SourceCodePro-Regular.ttf in Resources */,
 				5F937B0326FFDF9700588D20 /* btn-back.png in Resources */,
 				5F937B0126FFDF9300588D20 /* btn-multiplayer.png in Resources */,
 			);
@@ -314,11 +320,26 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/2DShooter/include",
+				);
 				INFOPLIST_FILE = "2DShooter/2DShooter-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				"OTHER_CFLAGS[arch=*]" = "-I//Users/BenjaminTimothy/Documents/Xcode-Projects/2DShooter/2DShooter/include/";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = "";
+				"OTHER_CFLAGS[arch=*]" = "";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+					"$(SRCROOT)/2DShooter/lib/jsoncpp/1.9.4_1/lib/libjsoncpp.24.dylib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -327,12 +348,26 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
-				HEADER_SEARCH_PATHS = /usr/local/include;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/2DShooter/include",
+				);
 				INFOPLIST_FILE = "2DShooter/2DShooter-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "";
-				"OTHER_CFLAGS[arch=*]" = "-I/Users/BenjaminTimothy/Documents/Xcode-Projects/2DShooter/2DShooter/include/";
+				"OTHER_CFLAGS[arch=*]" = "";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+					"$(SRCROOT)/2DShooter/lib/jsoncpp/1.9.4_1/lib/libjsoncpp.24.dylib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
