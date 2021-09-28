@@ -215,6 +215,12 @@ int main() {
     window.setFramerateLimit(fps);
     window.setKeyRepeatEnabled(false);
     
+    sf::Image icon;
+    if (!icon.loadFromFile(resourcePath() + "icon.png")) {
+        return -1;
+    }
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    
     // MARK: - Player settings
     sf::Vector2f player1Pos(cfgP1Pos[0].asFloat(), cfgP1Pos[1].asFloat());
     sf::Vector2f player2Pos(cfgP2Pos[0].asFloat(), cfgP2Pos[1].asFloat());

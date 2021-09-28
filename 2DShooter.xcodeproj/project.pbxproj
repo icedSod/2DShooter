@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F016BD52703E1AE00196640 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F016BD42703E1AE00196640 /* icon.png */; };
 		5F7C223C26F833B80031CC25 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5F7C223B26F833B80031CC25 /* ResourcePath.mm */; };
 		5F7C223F26F833B80031CC25 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5F7C223E26F833B80031CC25 /* main.cpp */; };
 		5F937AED26FFB15600588D20 /* include in Resources */ = {isa = PBXBuildFile; fileRef = 5F937AEC26FFB15600588D20 /* include */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F016BD42703E1AE00196640 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = 2DShooter/icon.png; sourceTree = SOURCE_ROOT; };
 		5F7C223626F833B70031CC25 /* 2DShooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2DShooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F7C223B26F833B80031CC25 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
 		5F7C223D26F833B80031CC25 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 		5F7C224026F833B80031CC25 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5F016BD42703E1AE00196640 /* icon.png */,
 				5FB90D2627016D470099041B /* config.json */,
 				5FADCC75270285FA00BDE577 /* SourceCodePro-Regular.ttf */,
 				5F937B0626FFF37900588D20 /* btn-createserver.png */,
@@ -176,6 +179,7 @@
 				5F937AED26FFB15600588D20 /* include in Resources */,
 				5FB90D2727016D470099041B /* config.json in Resources */,
 				5F937B0726FFF37900588D20 /* btn-createserver.png in Resources */,
+				5F016BD52703E1AE00196640 /* icon.png in Resources */,
 				5F937AFD26FFD6FF00588D20 /* btn-exit.png in Resources */,
 				5FB90D29270199AF0099041B /* lib in Resources */,
 				5F937B0526FFF36D00588D20 /* btn-joinserver.png in Resources */,
@@ -310,6 +314,7 @@
 		5F7C224C26F833B80031CC25 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
@@ -338,6 +343,7 @@
 		5F7C224D26F833B80031CC25 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (

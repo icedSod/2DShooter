@@ -10,7 +10,7 @@
         "size": 20,
         "speed": 150,
         "color": [[255, 0, 0], [0, 0, 255]],
-        "spawnpoint": [0, 0],
+        "spawnpoint": [160, 160],
         "ray_precision": 10
     },
     
