@@ -175,9 +175,9 @@ int main() {
     int cfgFps = config["window"]["fps"].asInt();
     string cfgTitle = config["window"]["title"].asString();
     // player
-    float cfgPlayerSize = config["player"]["size"].asFloat();
-    float cfgPlayerSpeed = config["player"]["speed"].asFloat();
-    float cfgRayPrecision = config["player"]["ray_precision"].asFloat();
+    float playerSize = config["player"]["size"].asFloat();
+    float playerSpeed = config["player"]["speed"].asFloat();
+    float rayPrecision = config["player"]["ray_precision"].asFloat();
     Json::Value cfgP1Pos = config["player"]["pos"][0];
     Json::Value cfgP2Pos = config["player"]["pos"][1];
     Json::Value cfgP1Color = config["player"]["color"][0];
@@ -186,14 +186,14 @@ int main() {
     // grid
     Json::Value cfgGridPos = config["grid"]["pos"];
     Json::Value cfgGridSize = config["grid"]["size"];
-    float cfgGridTileSize = config["grid"]["tile_size"].asFloat();
-    string cfgMapName = config["grid"]["map"].asString();
+    float gridTileSize = config["grid"]["tile_size"].asFloat();
+    string mapName = config["grid"]["map"].asString();
     // text
-    string cfgFont = config["text"]["font"].asString();
+    string fontName = config["text"]["font"].asString();
     Json::Value cfgT1Pos = config["text"]["t1_pos"];
     Json::Value cfgT2Pos = config["text"]["t2_pos"];
-    int cfgT1FontSize = config["text"]["t1_font_size"].asInt();
-    int cfgT2FontSize = config["text"]["t1_font_size"].asInt();
+    int t1FontSize = config["text"]["t1_font_size"].asInt();
+    int t2FontSize = config["text"]["t1_font_size"].asInt();
     Json::Value cfgT1Color = config["text"]["t1_color"];
     Json::Value cfgT2Color = config["text"]["t2_color"];
     // cooldown_bar
@@ -221,7 +221,7 @@ int main() {
     sf::Vector2f spawnpoint(cfgSpawnpoint[0].asFloat(), cfgSpawnpoint[1].asFloat());
     sf::Color player1Color = sf::Color(cfgP1Color[0].asInt(), cfgP1Color[1].asInt(), cfgP1Color[2].asInt());
     sf::Color player2Color = sf::Color(cfgP2Color[0].asInt(), cfgP2Color[1].asInt(), cfgP2Color[2].asInt());
-    Player player1(player1Pos, cfgPlayerSize, cfgPlayerSpeed, fps, windowSize, player1Color);
+    Player player1(player1Pos, playerSize, playerSpeed, fps, windowSize, player1Color);
     
     vector<Player> players;
     players.push_back(player1);
@@ -229,8 +229,8 @@ int main() {
     // MARK: - Grid settings
     sf::Vector2f gridPos(cfgGridPos[0].asFloat(), cfgGridPos[1].asFloat());
     sf::Vector2f gridSize(cfgGridSize[0].asFloat(), cfgGridSize[0].asFloat());
-    Grid grid(gridPos, gridSize, cfgGridTileSize);
-    grid.readMapFile(resourcePath() + cfgMapName);
+    Grid grid(gridPos, gridSize, gridTileSize);
+    grid.readMapFile(resourcePath() + mapName);
     
     // MARK: - Variables
     float reloadTime = 0;
@@ -251,20 +251,20 @@ int main() {
     sf::Text playerPosText;
     sf::Text weaponText;
     
-    if (!font.loadFromFile(resourcePath() + cfgFont)) {
+    if (!font.loadFromFile(resourcePath() + fontName)) {
         return -1;
     }
     
     // Player coordinate text
     playerPosText.setFont(font);
-    playerPosText.setCharacterSize(cfgT1FontSize);
+    playerPosText.setCharacterSize(t1FontSize);
     playerPosText.setFillColor(sf::Color(cfgT1Color[0].asInt(), cfgT1Color[1].asInt(), cfgT1Color[2].asInt()));
     playerPosText.setString('(' + to_string((int) players[plr].centerPoint().x) + ", " + to_string((int) players[plr].centerPoint().y) + ')');
     weaponText.setPosition(sf::Vector2f(cfgT1Pos[0].asDouble(), cfgT1Pos[1].asDouble()));
     
     // Selected weapon text
     weaponText.setFont(font);
-    weaponText.setCharacterSize(cfgT2FontSize);
+    weaponText.setCharacterSize(t2FontSize);
     weaponText.setFillColor(sf::Color(cfgT2Color[0].asInt(), cfgT2Color[1].asInt(), cfgT2Color[2].asInt()));
     weaponText.setString(players[plr].getWeaponString());
     weaponText.setPosition(sf::Vector2f(cfgT2Pos[0].asDouble(), cfgT2Pos[1].asDouble()));
@@ -338,7 +338,7 @@ int main() {
         plr = menuResult - 1;
         multiplayer = true;
         
-        Player player2(player2Pos, cfgPlayerSize, cfgPlayerSpeed, fps, windowSize, player2Color);
+        Player player2(player2Pos, playerSize, playerSpeed, fps, windowSize, player2Color);
         players.push_back(player2);
     }
     
@@ -452,7 +452,7 @@ int main() {
         window.clear(sf::Color::Black);
         
         // MARK: - Draw ray
-        players[plr].updateRay(mousePos, cfgRayPrecision, grid.obstacles);
+        players[plr].updateRay(mousePos, rayPrecision, grid.obstacles);
         for (Player p : players) {
             p.drawRay(window);
         }
@@ -512,7 +512,6 @@ int main() {
         }
         
         sf::Vector2f newCooldownBarSize = sf::Vector2f(cooldown / players[plr].getWeaponCooldown() * cooldownBarSize.x, cooldownBarSize.y);
-        
         if (newCooldownBarSize.x > cooldownBarSize.x) {
             newCooldownBarSize = cooldownBarSize;
         }

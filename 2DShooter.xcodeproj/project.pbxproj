@@ -81,16 +81,8 @@
 				5F7C223D26F833B80031CC25 /* ResourcePath.hpp */,
 				5F7C223E26F833B80031CC25 /* main.cpp */,
 				5F7C224026F833B80031CC25 /* Resources */,
-				5F7C223926F833B70031CC25 /* Supporting Files */,
 			);
 			path = 2DShooter;
-			sourceTree = "<group>";
-		};
-		5F7C223926F833B70031CC25 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		5F7C224026F833B80031CC25 /* Resources */ = {
