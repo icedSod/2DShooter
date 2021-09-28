@@ -19,5 +19,21 @@
         "size": [10, 10],
         "tile_size": 80,
         "map": "map.txt"
+    },
+    
+    "text": {
+        "font": "SourceCodePro-Regular.ttf",
+        "t1_pos": [0, 0],
+        "t2_pos": [0, 765],
+        "t1_font_size": 24,
+        "t2_font_size": 24,
+        "t1_color": [255, 255, 255],
+        "t2_color": [0, 0, 0]
+    },
+    
+    "cooldown_bar": {
+        "pos": [0, 760],
+        "size": [240, 40],
+        "color": [214, 204, 197, 200]
     }
 }

@@ -22,10 +22,70 @@ sf::Vector2f centerRect(sf::Vector2f rectSize, sf::Vector2f windowSize) {
     return sf::Vector2f(windowSize.x / 2 - rectSize.x / 2, windowSize.y / 2 - rectSize.y / 2);
 }
 
+bool checkJsonErrors(Json::Value config) {
+    vector<bool> checker;
+    
+    checker.push_back(config["window"]["size"][0].isUInt());
+    checker.push_back(config["window"]["size"][1].isUInt());
+    checker.push_back(config["window"]["fps"].isUInt());
+    checker.push_back(config["window"]["title"].isString());
+    checker.push_back(config["player"]["pos"][0][0].isDouble());
+    checker.push_back(config["player"]["pos"][0][1].isDouble());
+    checker.push_back(config["player"]["pos"][1][0].isDouble());
+    checker.push_back(config["player"]["pos"][1][1].isDouble());
+    checker.push_back(config["player"]["size"].isDouble());
+    checker.push_back(config["player"]["speed"].isDouble());
+    checker.push_back(config["player"]["color"][0][0].isInt());
+    checker.push_back(config["player"]["color"][0][1].isInt());
+    checker.push_back(config["player"]["color"][0][2].isInt());
+    checker.push_back(config["player"]["color"][1][0].isInt());
+    checker.push_back(config["player"]["color"][1][1].isInt());
+    checker.push_back(config["player"]["color"][1][2].isInt());
+    checker.push_back(config["player"]["spawnpoint"][0].isDouble());
+    checker.push_back(config["player"]["spawnpoint"][1].isDouble());
+    checker.push_back(config["player"]["ray_precision"].isDouble());
+    checker.push_back(config["grid"]["pos"][0].isDouble());
+    checker.push_back(config["grid"]["pos"][1].isDouble());
+    checker.push_back(config["grid"]["size"][0].isDouble());
+    checker.push_back(config["grid"]["size"][1].isDouble());
+    checker.push_back(config["grid"]["tile_size"].isDouble());
+    checker.push_back(config["grid"]["map"].isString());
+    checker.push_back(config["text"]["font"].isString());
+    checker.push_back(config["text"]["t1_pos"][0].isDouble());
+    checker.push_back(config["text"]["t1_pos"][1].isDouble());
+    checker.push_back(config["text"]["t2_pos"][0].isDouble());
+    checker.push_back(config["text"]["t2_pos"][1].isDouble());
+    checker.push_back(config["text"]["t1_font_size"].isInt());
+    checker.push_back(config["text"]["t2_font_size"].isInt());
+    checker.push_back(config["text"]["t1_color"][0].isInt());
+    checker.push_back(config["text"]["t1_color"][1].isInt());
+    checker.push_back(config["text"]["t1_color"][2].isInt());
+    checker.push_back(config["text"]["t2_color"][0].isInt());
+    checker.push_back(config["text"]["t2_color"][1].isInt());
+    checker.push_back(config["text"]["t2_color"][2].isInt());
+    checker.push_back(config["cooldown_bar"]["pos"][0].isDouble());
+    checker.push_back(config["cooldown_bar"]["pos"][1].isDouble());
+    checker.push_back(config["cooldown_bar"]["size"][0].isDouble());
+    checker.push_back(config["cooldown_bar"]["size"][1].isDouble());
+    checker.push_back(config["cooldown_bar"]["color"][0].isInt());
+    checker.push_back(config["cooldown_bar"]["color"][1].isInt());
+    checker.push_back(config["cooldown_bar"]["color"][2].isInt());
+    checker.push_back(config["cooldown_bar"]["color"][3].isInt());
+    
+    for (bool b : checker) {
+        if (!b) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
 int runMainMenu(sf::RenderWindow& window, Menu& mainMenu, sf::TcpSocket& socket) {
     sf::Vector2i mousePos;
     sf::Vector2f buttonIdx;
     
+    // MARK: - Menu loop
     while (mainMenu.run()) {
         sf::Event event;
         
@@ -100,61 +160,79 @@ int runMainMenu(sf::RenderWindow& window, Menu& mainMenu, sf::TcpSocket& socket)
 }
 
 int main() {
-    // Config file
+    // MARK: - Config file
     ifstream configFile(resourcePath() + "config.json");
     Json::Value config;
     Json::Reader reader;
     reader.parse(configFile, config);
     
-    // Multiplayer
+    if (!checkJsonErrors(config)) {
+        return -1;
+    }
+    
+    // window
+    Json::Value cfgWindowSize = config["window"]["size"];
+    int cfgFps = config["window"]["fps"].asInt();
+    string cfgTitle = config["window"]["title"].asString();
+    // player
+    float cfgPlayerSize = config["player"]["size"].asFloat();
+    float cfgPlayerSpeed = config["player"]["speed"].asFloat();
+    float cfgRayPrecision = config["player"]["ray_precision"].asFloat();
+    Json::Value cfgP1Pos = config["player"]["pos"][0];
+    Json::Value cfgP2Pos = config["player"]["pos"][1];
+    Json::Value cfgP1Color = config["player"]["color"][0];
+    Json::Value cfgP2Color = config["player"]["color"][1];
+    Json::Value cfgSpawnpoint = config["player"]["spawnpoint"];
+    // grid
+    Json::Value cfgGridPos = config["grid"]["pos"];
+    Json::Value cfgGridSize = config["grid"]["size"];
+    float cfgGridTileSize = config["grid"]["tile_size"].asFloat();
+    string cfgMapName = config["grid"]["map"].asString();
+    // text
+    string cfgFont = config["text"]["font"].asString();
+    Json::Value cfgT1Pos = config["text"]["t1_pos"];
+    Json::Value cfgT2Pos = config["text"]["t2_pos"];
+    int cfgT1FontSize = config["text"]["t1_font_size"].asInt();
+    int cfgT2FontSize = config["text"]["t1_font_size"].asInt();
+    Json::Value cfgT1Color = config["text"]["t1_color"];
+    Json::Value cfgT2Color = config["text"]["t2_color"];
+    // cooldown_bar
+    Json::Value cfgBarPos = config["cooldown_bar"]["pos"];
+    Json::Value cfgBarSize = config["cooldown_bar"]["size"];
+    Json::Value cfgBarColor = config["cooldown_bar"]["color"];
+    
+    // MARK: - Multiplayer
     sf::TcpSocket socket;
     bool multiplayer = false;
     int plr = 0;
     
     socket.setBlocking(false);
     
-    // Window settings
-    const int fps = config["window"]["fps"].asInt();
-    sf::Vector2u windowSize(config["window"]["size"][0].asUInt(), config["window"]["size"][1].asUInt());
-    sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), config["window"]["title"].asString());
+    // MARK: - Window settings
+    const int fps = cfgFps;
+    sf::Vector2u windowSize(cfgWindowSize[0].asUInt(), cfgWindowSize[1].asUInt());
+    sf::RenderWindow window(sf::VideoMode(windowSize.x, windowSize.y), cfgTitle);
     window.setFramerateLimit(fps);
     window.setKeyRepeatEnabled(false);
     
-    // Player settings
-    float playerSize = config["player"]["size"].asFloat();
-    float playerSpeed = config["player"]["speed"].asFloat();
-    float rayPrecision = config["player"]["ray_precision"].asFloat();
-    
-    auto cfgP1Pos = config["player"]["pos"][0];
-    auto cfgP2Pos = config["player"]["pos"][1];
-    auto cfgP1Color = config["player"]["color"][0];
-    auto cfgP2Color = config["player"]["color"][1];
-    auto cfgSpawnpoint = config["player"]["spawnpoint"];
-    
+    // MARK: - Player settings
     sf::Vector2f player1Pos(cfgP1Pos[0].asFloat(), cfgP1Pos[1].asFloat());
     sf::Vector2f player2Pos(cfgP2Pos[0].asFloat(), cfgP2Pos[1].asFloat());
     sf::Vector2f spawnpoint(cfgSpawnpoint[0].asFloat(), cfgSpawnpoint[1].asFloat());
     sf::Color player1Color = sf::Color(cfgP1Color[0].asInt(), cfgP1Color[1].asInt(), cfgP1Color[2].asInt());
     sf::Color player2Color = sf::Color(cfgP2Color[0].asInt(), cfgP2Color[1].asInt(), cfgP2Color[2].asInt());
+    Player player1(player1Pos, cfgPlayerSize, cfgPlayerSpeed, fps, windowSize, player1Color);
     
-    // Grid settings
-    auto cfgGridPos = config["grid"]["pos"];
-    auto cfgGridSize = config["grid"]["size"];
+    vector<Player> players;
+    players.push_back(player1);
     
+    // MARK: - Grid settings
     sf::Vector2f gridPos(cfgGridPos[0].asFloat(), cfgGridPos[1].asFloat());
     sf::Vector2f gridSize(cfgGridSize[0].asFloat(), cfgGridSize[0].asFloat());
-    float gridTileSize = config["grid"]["tile_size"].asFloat();
-    string mapFileName = config["grid"]["map"].asString();
+    Grid grid(gridPos, gridSize, cfgGridTileSize);
+    grid.readMapFile(resourcePath() + cfgMapName);
     
-    // Class objects
-    vector<Player> players;
-    Grid grid(gridPos, gridSize, gridTileSize);
-    Player player1(player1Pos, playerSize, playerSpeed, fps, windowSize, player1Color);
-    
-    players.push_back(player1);
-    grid.readMapFile(resourcePath() + mapFileName);
-    
-    // Variables
+    // MARK: - Variables
     float reloadTime = 0;
     bool updated = true;
     bool mousePressed = false;
@@ -168,27 +246,28 @@ int main() {
     vector<sf::Keyboard::Key> keys;
     map<char, bool> keyStates;
     
-    // Text
+    // MARK: - Text
     sf::Font font;
     sf::Text playerPosText;
     sf::Text weaponText;
-    string fontFileName = "SourceCodePro-Regular.ttf";
     
-    if (!font.loadFromFile(resourcePath() + fontFileName)) {
+    if (!font.loadFromFile(resourcePath() + cfgFont)) {
         return -1;
     }
     
     // Player coordinate text
     playerPosText.setFont(font);
-    playerPosText.setCharacterSize(24);
+    playerPosText.setCharacterSize(cfgT1FontSize);
+    playerPosText.setFillColor(sf::Color(cfgT1Color[0].asInt(), cfgT1Color[1].asInt(), cfgT1Color[2].asInt()));
     playerPosText.setString('(' + to_string((int) players[plr].centerPoint().x) + ", " + to_string((int) players[plr].centerPoint().y) + ')');
+    weaponText.setPosition(sf::Vector2f(cfgT1Pos[0].asDouble(), cfgT1Pos[1].asDouble()));
     
     // Selected weapon text
     weaponText.setFont(font);
-    weaponText.setCharacterSize(24);
-    weaponText.setFillColor(sf::Color::Black);
+    weaponText.setCharacterSize(cfgT2FontSize);
+    weaponText.setFillColor(sf::Color(cfgT2Color[0].asInt(), cfgT2Color[1].asInt(), cfgT2Color[2].asInt()));
     weaponText.setString(players[plr].getWeaponString());
-    weaponText.setPosition(0, windowSize.y - weaponText.getLocalBounds().height * 2);
+    weaponText.setPosition(sf::Vector2f(cfgT2Pos[0].asDouble(), cfgT2Pos[1].asDouble()));
     
     // Create a key for each character
     for (char c : keybinds) {
@@ -201,14 +280,14 @@ int main() {
     keys.push_back(sf::Keyboard::S);
     keys.push_back(sf::Keyboard::D);
     
-    // Cooldown bar
-    sf::Vector2f cooldownBarSize(240, 40);
-    sf::Vector2f cooldownBarPos(0, 800 - cooldownBarSize.y);
+    // MARK: - Cooldown bar
+    sf::Vector2f cooldownBarSize(cfgBarSize[0].asDouble(), cfgBarSize[1].asDouble());
+    sf::Vector2f cooldownBarPos(cfgBarPos[0].asDouble(), cfgBarPos[1].asDouble());
     sf::RectangleShape cooldownBar(cooldownBarSize);
     cooldownBar.setPosition(cooldownBarPos);
-    cooldownBar.setFillColor(sf::Color(214, 204, 197, 200));
+    cooldownBar.setFillColor(sf::Color(cfgBarColor[0].asInt(), cfgBarColor[1].asInt(), cfgBarColor[2].asInt(), cfgBarColor[3].asInt()));
     
-    // Main menu
+    // MARK: - Main menu
     int layerNumber = 3;
     vector< vector<Button> > btnLayers(layerNumber, vector<Button>());
     vector< vector<string> > btnFileNames(layerNumber, vector<string>());
@@ -225,7 +304,7 @@ int main() {
     btnFileNames[2].push_back("btn-createserver.png");
     btnFileNames[2].push_back("btn-joinserver.png");
     
-    // Button data
+    // MARK: - Button data
     sf::Vector2f btnSize(200, 75);
     sf::Vector2f centerPos = centerRect(btnSize, (sf::Vector2f) windowSize);
     
@@ -258,13 +337,12 @@ int main() {
     if (menuResult == 1 || menuResult == 2) {
         plr = menuResult - 1;
         multiplayer = true;
-    }
-    
-    if (multiplayer) {
-        Player player2(player2Pos, playerSize, playerSpeed, fps, windowSize, player2Color);
+        
+        Player player2(player2Pos, cfgPlayerSize, cfgPlayerSpeed, fps, windowSize, player2Color);
         players.push_back(player2);
     }
     
+    // MARK: - Main loop
     while (window.isOpen()) {
         sf::Event event;
         float time = clock.getElapsedTime().asSeconds();
@@ -323,7 +401,7 @@ int main() {
             }
         }
         
-        // If a key is held down move the player
+        // MARK: - Move player
         if (updated) {
             for (auto& [cKey, bVal] : keyStates) {
                 if (keyStates[cKey]) {
@@ -333,7 +411,7 @@ int main() {
         }
         
         if (multiplayer) {
-            // Send player data
+            // MARK: - Send player data
             sf::Packet packet;
             if (players[plr].moved() || mousePos != oldMousePos || mousePressed || playerShot) {
                 // Send data to other client
@@ -345,7 +423,7 @@ int main() {
                 socket.send(packet);
             }
             
-            // Receive player data
+            // MARK: - Receive player data
             socket.receive(packet);
             sf::Vector2f p2Pos;
             sf::Vector2f p2RayPoint;
@@ -373,30 +451,30 @@ int main() {
         
         window.clear(sf::Color::Black);
         
-        // Draw ray
-        players[plr].updateRay(mousePos, rayPrecision, grid.obstacles);
+        // MARK: - Draw ray
+        players[plr].updateRay(mousePos, cfgRayPrecision, grid.obstacles);
         for (Player p : players) {
             p.drawRay(window);
         }
         
-        // Draw grid
+        // MARK: - Draw grid
         grid.draw(window);
         
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players[i].bullets.size(); j++) {
                 Player& p = players[i];
                 
-                // Draw and update bullets
+                // MARK: - Draw bullets
                 p.bullets[j].update();
                 p.bullets[j].draw(window);
                 
-                // Destroy bullet when it is off screen
+                // MARK: - Destroy bullet
                 if (p.bullets[j].checkBoundaries()) {
                     p.bullets.erase(p.bullets.begin() + j);
                     j--;
                 }
                 
-                // Player and bullet collision
+                // MARK: - Player bullet collision
                 if (multiplayer && i != plr && players[plr].containsPoint(p.bullets[j].centerPoint())) {
                     players[plr].setPos(spawnpoint);
                     playerShot = true;
@@ -409,14 +487,14 @@ int main() {
             for (Player& p : players) {
                 for (int i = 0; i < p.bullets.size(); i++) {
                     if (obstacle.containsPoint(p.bullets[i].centerPoint())) {
-                        // Destroy bullet on obstacle collision
+                        // MARK: - Bullet obstacle collision
                         p.bullets.erase(p.bullets.begin() + i);
                         i--;
                     }
                 }
             }
             
-            // Check for player and obstacle collision
+            // MARK: - Player obstacle collision
             float playerSize = players[plr].getSize();
             sf::Vector2f playerPos = players[plr].getPos();
             
@@ -424,7 +502,7 @@ int main() {
                 players[plr].setPos(players[plr].getOldPos());
             }
             
-            // Draw obstacles
+            // MARK: - Draw obstacles
             obstacle.draw(window);
         }
         
@@ -441,14 +519,14 @@ int main() {
         
         cooldownBar.setSize(newCooldownBarSize);
         
-        // Draw cooldown bar
+        // MARK: - Draw cooldown bar
         window.draw(cooldownBar);
         
-        // Draw text
+        // MARK: - Draw text
         window.draw(playerPosText);
         window.draw(weaponText);
         
-        // Draw players
+        // MARK: - Draw players
         for (Player p : players) {
             p.draw(window);
         }

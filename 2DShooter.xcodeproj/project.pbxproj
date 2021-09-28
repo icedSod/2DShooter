@@ -19,13 +19,13 @@
 		5F937B0326FFDF9700588D20 /* btn-back.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F937B0226FFDF9700588D20 /* btn-back.png */; };
 		5F937B0526FFF36D00588D20 /* btn-joinserver.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F937B0426FFF36D00588D20 /* btn-joinserver.png */; };
 		5F937B0726FFF37900588D20 /* btn-createserver.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F937B0626FFF37900588D20 /* btn-createserver.png */; };
+		5FADCC762702860C00BDE577 /* SourceCodePro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5FADCC75270285FA00BDE577 /* SourceCodePro-Regular.ttf */; };
 		5FB90D2727016D470099041B /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = 5FB90D2627016D470099041B /* config.json */; };
 		5FB90D29270199AF0099041B /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 5FB90D28270199AF0099041B /* lib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5F7C223626F833B70031CC25 /* 2DShooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2DShooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F7C223A26F833B80031CC25 /* 2DShooter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "2DShooter-Info.plist"; path = "../2DShooter-Info.plist"; sourceTree = "<group>"; };
 		5F7C223B26F833B80031CC25 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
 		5F7C223D26F833B80031CC25 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
 		5F7C223E26F833B80031CC25 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -39,9 +39,9 @@
 		5F937B0226FFDF9700588D20 /* btn-back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btn-back.png"; path = "2DShooter/btn-back.png"; sourceTree = SOURCE_ROOT; };
 		5F937B0426FFF36D00588D20 /* btn-joinserver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btn-joinserver.png"; path = "2DShooter/btn-joinserver.png"; sourceTree = SOURCE_ROOT; };
 		5F937B0626FFF37900588D20 /* btn-createserver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btn-createserver.png"; path = "2DShooter/btn-createserver.png"; sourceTree = SOURCE_ROOT; };
+		5FADCC75270285FA00BDE577 /* SourceCodePro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceCodePro-Regular.ttf"; path = "2DShooter/SourceCodePro-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		5FB90D2627016D470099041B /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = config.json; path = 2DShooter/Resources/config.json; sourceTree = SOURCE_ROOT; };
 		5FB90D28270199AF0099041B /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
-		5FB90D2C27019AA70099041B /* SourceCodePro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "SourceCodePro-Regular.ttf"; path = "2DShooter/SourceCodePro-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +89,6 @@
 		5F7C223926F833B70031CC25 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5F7C223A26F833B80031CC25 /* 2DShooter-Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -97,8 +96,8 @@
 		5F7C224026F833B80031CC25 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				5FB90D2C27019AA70099041B /* SourceCodePro-Regular.ttf */,
 				5FB90D2627016D470099041B /* config.json */,
+				5FADCC75270285FA00BDE577 /* SourceCodePro-Regular.ttf */,
 				5F937B0626FFF37900588D20 /* btn-createserver.png */,
 				5F937B0426FFF36D00588D20 /* btn-joinserver.png */,
 				5F937B0226FFDF9700588D20 /* btn-back.png */,
@@ -177,6 +176,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FADCC762702860C00BDE577 /* SourceCodePro-Regular.ttf in Resources */,
 				5F937AF126FFB1DD00588D20 /* map.txt in Resources */,
 				5F937AFF26FFDF8100588D20 /* btn-singleplayer.png in Resources */,
 				5F937AFB26FFD5AC00588D20 /* btn-play.png in Resources */,
