@@ -27,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		5F016BD42703E1AE00196640 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = 2DShooter/icon.png; sourceTree = SOURCE_ROOT; };
+		5F016BD62703E47900196640 /* 2DShooter.dmg */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2DShooter.dmg; sourceTree = "<group>"; };
 		5F7C223626F833B70031CC25 /* 2DShooter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 2DShooter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F7C223B26F833B80031CC25 /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
 		5F7C223D26F833B80031CC25 /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
@@ -60,6 +61,7 @@
 		5F7C222C26F833B70031CC25 = {
 			isa = PBXGroup;
 			children = (
+				5F016BD62703E47900196640 /* 2DShooter.dmg */,
 				5F7C223826F833B70031CC25 /* 2DShooter */,
 				5F7C223726F833B70031CC25 /* Products */,
 				5F960AC826FC20A1009154DD /* Frameworks */,
