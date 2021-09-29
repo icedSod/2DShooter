@@ -71,6 +71,7 @@ bool checkJsonErrors(Json::Value config) {
     checker.push_back(config["cooldown_bar"]["color"][1].isInt());
     checker.push_back(config["cooldown_bar"]["color"][2].isInt());
     checker.push_back(config["cooldown_bar"]["color"][3].isInt());
+    checker.push_back(config["ip"].isString());
     
     for (bool b : checker) {
         if (!b) {
@@ -81,7 +82,7 @@ bool checkJsonErrors(Json::Value config) {
     return true;
 }
 
-int runMainMenu(sf::RenderWindow& window, Menu& mainMenu, sf::TcpSocket& socket) {
+int runMainMenu(sf::RenderWindow& window, Menu& mainMenu, sf::TcpSocket& socket, string hostIp) {
     sf::Vector2i mousePos;
     sf::Vector2f buttonIdx;
     
@@ -131,7 +132,13 @@ int runMainMenu(sf::RenderWindow& window, Menu& mainMenu, sf::TcpSocket& socket)
                                 return 1;
                             } else if (buttonIdx.y == 1) {
                                 // Join server
-                                sf::IpAddress ip = sf::IpAddress::getLocalAddress();
+                                sf::IpAddress ip;
+                                if (hostIp == "") {
+                                    ip = sf::IpAddress::getLocalAddress();
+                                } else {
+                                    ip = sf::IpAddress(hostIp);
+                                }
+                                
                                 if (!socket.connect(ip, 2000)) {
                                     return 0;
                                 }
@@ -200,6 +207,8 @@ int main() {
     Json::Value cfgBarPos = config["cooldown_bar"]["pos"];
     Json::Value cfgBarSize = config["cooldown_bar"]["size"];
     Json::Value cfgBarColor = config["cooldown_bar"]["color"];
+    // ip
+    string ip = config["ip"].asString();
     
     // MARK: - Multiplayer
     sf::TcpSocket socket;
@@ -338,7 +347,7 @@ int main() {
     btnLayers[2].push_back(backBtn);
     
     Menu mainMenu(btnLayers);
-    int menuResult = runMainMenu(window, mainMenu, socket);
+    int menuResult = runMainMenu(window, mainMenu, socket, ip);
     
     if (menuResult == 1 || menuResult == 2) {
         plr = menuResult - 1;
